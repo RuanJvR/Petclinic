@@ -512,8 +512,8 @@
                 <jpa.database>MYSQL</jpa.database>
                 <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
                 <jdbc.url>jdbc:mysql://${databaseServerName}/${databaseName}?useUnicode=true</jdbc.url>
-                <jdbc.username>root</jdbc.username>
-                <jdbc.password>GrassGrows2!</jdbc.password>
+                <jdbc.username>${databaseUserName}</jdbc.username>
+                <jdbc.password>${databaseUserPassword}</jdbc.password>
             </properties>
             <dependencies>
                 <dependency>
