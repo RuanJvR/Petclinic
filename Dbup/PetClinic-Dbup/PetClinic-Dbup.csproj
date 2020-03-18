@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RootNamespace>PetClinic_Dbup</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="deploy.ps1" />
+    <None Remove="Scripts\initDB.sql" />
+    <None Remove="Scripts\populateDB.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="deploy.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\initDB.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Scripts\populateDB.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="dbup-mysql" Version="4.3.0" />
+  </ItemGroup>
+
+</Project>
