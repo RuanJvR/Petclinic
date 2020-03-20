@@ -1,0 +1,4 @@
+C:\projects\petclinic\Dbup\PetClinic-Dbup\obj\Debug\netcoreapp3.1\PetClinic-Dbup.csprojAssemblyReference.cache
+C:\projects\petclinic\Dbup\PetClinic-Dbup\obj\Debug\netcoreapp3.1\PetClinic-Dbup.csproj.CoreCompileInputs.cache
+C:\projects\petclinic\Dbup\PetClinic-Dbup\obj\Debug\netcoreapp3.1\PetClinic-Dbup.AssemblyInfoInputs.cache
+C:\projects\petclinic\Dbup\PetClinic-Dbup\obj\Debug\netcoreapp3.1\PetClinic-Dbup.AssemblyInfo.cs

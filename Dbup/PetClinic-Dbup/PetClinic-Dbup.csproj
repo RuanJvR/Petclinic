@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>PetClinic_Dbup</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="deploy.ps1" />
-    <None Remove="Scripts\initDB.sql" />
-    <None Remove="Scripts\populateDB.sql" />
+    <None Remove="Scripts\Script0001 - initDB.sql" />
+    <None Remove="Scripts\Script0002 - populateDB.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,10 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Scripts\initDB.sql">
+    <EmbeddedResource Include="Scripts\Script0001 - initDB.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Scripts\populateDB.sql">
+    <EmbeddedResource Include="Scripts\Script0002 - populateDB.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
