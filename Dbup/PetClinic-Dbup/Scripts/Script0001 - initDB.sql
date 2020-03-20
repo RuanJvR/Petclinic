@@ -1,12 +1,12 @@
-CREATE DATABASE IF NOT EXISTS petclinic;
 
-ALTER DATABASE petclinic
+
+ALTER DATABASE #{Project.Database.Name}
   DEFAULT CHARACTER SET utf8
   DEFAULT COLLATE utf8_general_ci;
 
 
 
-USE petclinic;
+USE #{Project.Database.Name};
 
 CREATE TABLE IF NOT EXISTS vets (
   id INT(4) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
