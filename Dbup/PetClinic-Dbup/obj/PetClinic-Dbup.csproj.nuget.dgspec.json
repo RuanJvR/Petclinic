@@ -41,9 +41,9 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
-            "Pomelo.EntityFrameworkCore.MySql": {
+            "MySql.Data": {
               "target": "Package",
-              "version": "[3.1.1, )"
+              "version": "[8.0.19, )"
             },
             "dbup-mysql": {
               "target": "Package",
