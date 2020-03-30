@@ -12,7 +12,8 @@ pipelines:
           - maven
         script: # Modify the commands below to build your repository.
           - export LABEL=$APPLICATION_ENVIRONMENT"_"$(date +%Y%m%d_%H%M%S)"_"$BITBUCKET_BUILD_NUMBER
-          - export TWO_DIGIT_YEAR="$(date + %yy)"
-          - export TIME=$(date + %Hhmmss)
+          - export DAY_OF_YEAR="$(date +%j)
+          - export TWO_DIGIT_YEAR="$(date +%yy)"
+          - export TIME="$(date +%Hhmmss)"
           - export BITBUCKET_BUILD_NUMBER=$TWO_DIGIT_YEAR
           - mvn -B verify -DskipTests -Dproject.versionNumber=$BITBUCKET_BUILD_NUMBER # -B batch mode makes Maven less verbose
