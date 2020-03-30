@@ -26,7 +26,7 @@ pipelines:
           - export TWO_DIGIT_YEAR="$(date +%y)"
           - export TIME="$(date +%H%M%S)"
           - export BITBUCKET_BUILD_NUMBER=$Major.$Minor.$TWO_DIGIT_YEAR$DAY_OF_YEAR.$TIME
-          - pipe: octopusdeploy/pack:latest
+          - pipe: octopusdeploy/pack:0.5.1
             variables:
               ID: petclinic.mysql.flyway
               FORMAT: 'Nupkg'
