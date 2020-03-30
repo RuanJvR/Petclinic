@@ -12,7 +12,7 @@ pipelines:
           - maven
         script: # Modify the commands below to build your repository.
           - export LABEL=$APPLICATION_ENVIRONMENT"_"$(date +%Y%m%d_%H%M%S)"_"$BITBUCKET_BUILD_NUMBER
-
+          - export DAY_OF_YEAR="$(date +%j)"
           - export TWO_DIGIT_YEAR="$(date +%y)"
           - export TIME="$(date +%H%M%S)"
           - export BITBUCKET_BUILD_NUMBER=$Major.$Minor.$TWO_DIGIT_YEAR.$TIME
