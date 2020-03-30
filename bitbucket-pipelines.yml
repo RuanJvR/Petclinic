@@ -11,7 +11,7 @@ pipelines:
         caches:
           - maven
         script: # Modify the commands below to build your repository.
-          - DAY_OF_YEAR=$(date + %j)
+          
           - export TWO_DIGIT_YEAR=$(date + %yy)
           - export TIME=$(date + %Hhmmss)
           - export BITBUCKET_BUILD_NUMBER=$Major.$Minor.$TWO_DIGIT_YEAR$DAY_OF_YEAR.$TIME
