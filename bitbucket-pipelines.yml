@@ -8,12 +8,31 @@ image: maven:3.6.1
 pipelines:
   default:
     - step:
+        name: Build Petclinic
         caches:
           - maven
         script: # Modify the commands below to build your repository.
-          - export LABEL=$APPLICATION_ENVIRONMENT"_"$(date +%Y%m%d_%H%M%S)"_"$BITBUCKET_BUILD_NUMBER
           - export DAY_OF_YEAR="$(date +%j)"
           - export TWO_DIGIT_YEAR="$(date +%y)"
           - export TIME="$(date +%H%M%S)"
           - export BITBUCKET_BUILD_NUMBER=$Major.$Minor.$TWO_DIGIT_YEAR$DAY_OF_YEAR.$TIME
           - mvn -B verify -DskipTests -Dproject.versionNumber=$BITBUCKET_BUILD_NUMBER # -B batch mode makes Maven less verbose
+        artifacts:
+          - "target/*.war"
+    - step:
+        name: Package Flyway
+        script:
+          - export DAY_OF_YEAR="$(date +%j)"
+          - export TWO_DIGIT_YEAR="$(date +%y)"
+          - export TIME="$(date +%H%M%S)"
+          - export BITBUCKET_BUILD_NUMBER=$Major.$Minor.$TWO_DIGIT_YEAR$DAY_OF_YEAR.$TIME
+          - pipe: octopusdeploy/pack:0.5.1
+            variables:
+              ID: petclinic.mysql.flyway
+              FORMAT: 'Nupkg'
+              VERSION: $BITBUCKET_BUILD_NUMBER
+              SOURCE_PATH: '/flyway'
+              OUTPUT_PATH: './out'
+              DEBUG: 'false'
+        artifacts:
+          - "out/*.nupkg"
