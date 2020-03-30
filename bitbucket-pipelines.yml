@@ -43,7 +43,7 @@ pipelines:
           - export TWO_DIGIT_YEAR="$(date +%y)"
           - export TIME="$(date +%H%M%S)"
           - export BITBUCKET_BUILD_NUMBER=$Major.$Minor.$TWO_DIGIT_YEAR$DAY_OF_YEAR.$TIME
-          - octo push --package "flyway/petclinic.mysql.flyway.$BITBUCKET_BUILD_NUMBER.nupkg" --server $OCTOPUS_URL --space 'Bitbucket' --apiKey $OCTOPUS_API_KEY
+          - octo push --package "./flyway/petclinic.mysql.flyway.$BITBUCKET_BUILD_NUMBER.nupkg" --server $OCTOPUS_URL --space 'Bitbucket' --apiKey $OCTOPUS_API_KEY
           - octo push --package "target/petclinic.web.$BITBUCKET_BUILD_NUMBER.war" -- server $OCTOPUS_URL --space 'Bitbucket' --apiKey $OCTOPUS_API_KEY
         image: octopusdeploy/octo:latest
 
