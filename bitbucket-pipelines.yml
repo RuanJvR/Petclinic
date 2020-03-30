@@ -8,6 +8,9 @@ image: maven:3.6.1
 pipelines:
   default:
     - step:
+        script:
+         - export BITBUCKET_BUILD_NUMBER=1.0.0.0
+    - step:
         caches:
           - maven
         script: # Modify the commands below to build your repository.
