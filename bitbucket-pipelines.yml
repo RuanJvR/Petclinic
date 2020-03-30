@@ -31,7 +31,7 @@ pipelines:
               ID: petclinic.mysql.flyway
               FORMAT: 'Nupkg'
               VERSION: $BITBUCKET_BUILD_NUMBER
-              SOURCE_PATH: '/flyway'
+              SOURCE_PATH: 'flyway'
               OUTPUT_PATH: './out'
               DEBUG: 'false'
         artifacts:
