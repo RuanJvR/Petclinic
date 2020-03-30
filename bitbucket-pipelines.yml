@@ -14,5 +14,5 @@ pipelines:
           
           - export TWO_DIGIT_YEAR=$(date + %yy)
           - export TIME=$(date + %Hhmmss)
-          - export BITBUCKET_BUILD_NUMBER=$Major.$Minor.$TWO_DIGIT_YEAR$DAY_OF_YEAR.$TIME
+          - export BITBUCKET_BUILD_NUMBER=$Major.$Minor.$TWO_DIGIT_YEAR.$TIME
           - mvn -B verify -DskipTests -Dproject.versionNumber=$BITBUCKET_BUILD_NUMBER # -B batch mode makes Maven less verbose
