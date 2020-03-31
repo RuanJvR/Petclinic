@@ -18,7 +18,7 @@ pipelines:
             - export TIME="$(date +%H%M%S)"
             - export GENERATED_VERSION=$Major.$Minor.$TWO_DIGIT_YEAR$DAY_OF_YEAR.$TIME
             - printenv | grep GENERATED_VERSION > environment.txt
-            - mvn -B verify -DskipTests -Dproject.versionNumber=$GENERATED_VERSION # -B batch mode makes Maven less verbose
+            - mvn -B verify -DskipTests -Dproject.versionNumber=$GENERATED_VERSION -DdatabaseUserName=$DatabaseUserName -DdatabaseUserPassword=$DatabaseUserPassword # -B batch mode makes Maven less verbose
           artifacts:
           - environment.txt
           - "target/*.war"
