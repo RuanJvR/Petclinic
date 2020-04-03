@@ -1,35 +1,37 @@
-# This is a sample build configuration for Java (Maven).
-# Check our guides at https://confluence.atlassian.com/x/zd-5Mw for more examples.
-# Only use spaces to indent your .yml configuration.
-# -----
-# You can specify a custom docker image from Docker Hub as your build environment.
+# BitBucket Pipeline file for RandomQuotes-JS
+# 
+# Only use spaces to indent the .yml configuration.
+# -------
 image: maven:3.6.1
 
 pipelines:
   branches:
     master:
       - step:
-          name: Build Petclinic
+        name: Generate Package Version
+        script:
+          - export GENERATED_VERSION=$MAJOR_VERSION.$MINOR_VERSION."$(date +%y%m%d)"."$(date +%H%M)"
+          - printenv | grep GENERATED_VERSION > environment.txt
+        artifacts:
+          - environment.txt
+      - step:
+          name: Build PetClinic
           caches:
             - maven
           script:
-            - export DAY_OF_YEAR="$(date +%j)"
-            - export TWO_DIGIT_YEAR="$(date +%y)"
-            - export TIME="$(date +%H%M%S)"
-            - export GENERATED_VERSION=$Major.$Minor.$TWO_DIGIT_YEAR$DAY_OF_YEAR.$TIME
-            - printenv | grep GENERATED_VERSION > environment.txt
-            - mvn -B verify -DskipTests -Dproject.versionNumber=$GENERATED_VERSION -DdatabaseUserName=$DatabaseUserName -DdatabaseUserPassword=$DatabaseUserPassword -DdatabaseServerName=$DatabaseServerName -DdatabaseName=$DatabaseName # -B batch mode makes Maven less verbose
+            - while IFS='' read -r line || [[ -n "$line" ]]; do export $line; done < environment.txt
+            # -B batch mode makes Maven less verbose
+            - mvn -B verify -DskipTests -Dproject.versionNumber=$GENERATED_VERSION -DdatabaseUserName=$DatabaseUserName -DdatabaseUserPassword=$DatabaseUserPassword -DdatabaseServerName=$DatabaseServerName -DdatabaseName=$DatabaseName 
           artifacts:
           - environment.txt
           - "target/*.war"
       - step:
-          name: Package Flyway
+          name: Pack MySQL Flyway for Octopus
           script:
-            # Read $GENERATED_VERSION
             - while IFS='' read -r line || [[ -n "$line" ]]; do export $line; done < environment.txt
-            - pipe: octopusdeploy/pack:0.6.0
+            - pipe: octopusdeploy/pack:0.6.1
               variables:
-                ID: petclinic.mysql.flyway
+                ID: 'petclinic.mysql.flyway'
                 FORMAT: 'Nupkg'
                 VERSION: $GENERATED_VERSION
                 SOURCE_PATH: 'flyway'
@@ -38,10 +40,9 @@ pipelines:
           artifacts:
             - "flyway/*.nupkg"
       - step:
-          name: Push packages
+          name: Push packages to Octopus
           image: octopusdeploy/octo:7.3.2
           script:
-            # Read $GENERATED_VERSION
             - while IFS='' read -r line || [[ -n "$line" ]]; do export $line; done < environment.txt
             - octo push --package "./flyway/petclinic.mysql.flyway.$GENERATED_VERSION.nupkg" --server $OCTOPUS_URL --space $OCTOPUS_SPACE --apiKey $OCTOPUS_API_KEY
             - octo push --package "target/petclinic.web.$GENERATED_VERSION.war" --server $OCTOPUS_URL --space $OCTOPUS_SPACE --apiKey $OCTOPUS_API_KEY
@@ -49,9 +50,18 @@ pipelines:
           name: Push Build Info to Octopus
           image: octopusdeploy/octo:7.3.2
           script:
-            # Read $GENERATED_VERSION
             - while IFS='' read -r line || [[ -n "$line" ]]; do export $line; done < environment.txt
             - apk update && apk upgrade && apk add --no-cache git curl jq
             - /bin/sh create-build-info.sh $BITBUCKET_REPO_OWNER $BITBUCKET_REPO_SLUG $BITBUCKET_BUILD_NUMBER $BITBUCKET_COMMIT $BITBUCKET_BRANCH $BITBUCKET_GIT_HTTP_ORIGIN
             - octo build-information --package-id 'petclinic.web' --package-id 'petclinic.mysql.flyway' --version $GENERATED_VERSION --file=octopus.buildinfo --server $OCTOPUS_URL --space $OCTOPUS_SPACE --apiKey $OCTOPUS_API_KEY 
+      - step:
+          name: Create release in Octopus
+          image: octopusdeploy/octo:7.3.2
+          script:
+            - octo create-release --project $OCTOPUS_PROJECT --server $OCTOPUS_SERVER --space $OCTOPUS_SPACE --apiKey $OCTOPUS_API_KEY
+      - step:
+          name: Deploy to Development
+          image: octopusdeploy/octo:7.3.2
+          script:
+            - octo deploy-release --project $OCTOPUS_PROJECT --deployTo 'Development' --version latest --server $OCTOPUS_SERVER --space $OCTOPUS_SPACE --apiKey $OCTOPUS_API_KEY
         
