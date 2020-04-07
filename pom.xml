@@ -511,7 +511,7 @@
                 <db.script>mysql</db.script>
                 <jpa.database>MYSQL</jpa.database>
                 <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
-                <jdbc.url>jdbc:mysql://${databaseServerName}/${databaseName}?autoReconnect=true</jdbc.url>
+                <jdbc.url>jdbc:mysql://${databaseServerName}/${databaseName}?serverTimezone=UTC</jdbc.url>
                 <jdbc.username>${databaseUserName}</jdbc.username>
                 <jdbc.password>${databaseUserPassword}</jdbc.password>
             </properties>
