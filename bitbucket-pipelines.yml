@@ -1,6 +1,6 @@
 # BitBucket Pipeline file for RandomQuotes-JS
 # 
-# Only use spaces to indent the .yml configuration. 
+# Only use spaces to indent the .yml configuration.
 # -------
 image: maven:3.6.1
 
