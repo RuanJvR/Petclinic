@@ -37,7 +37,7 @@
         <property name="minIdle" value="10" />
         <property name="testWhileIdle" value="true" />
         <property name="testOnBorrow" value="true" />
-        <property name="validationQuery" value="/* ping */ SELECT 1" />
+        <property name="validationQuery" value="/* ping */ SELECT 1" /> 
     </bean>      
 
     <!-- Database initializer. If any of the script fails, the initialization stops. -->
