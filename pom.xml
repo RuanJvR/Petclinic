@@ -357,6 +357,30 @@
             </plugin>
 
             <plugin>
+                <groupId>com.google.code.maven-replacer-plugin</groupId>
+                <artifactId>replacer</artifactId>
+                <version>1.5.3</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>                    
+                    </execution>
+                </executions>
+                <configuration>
+                    <ignoreMissingFile>true</ignoreMissingFile>
+                    <file>${basedir}/src/main/webapp/WEB-INF/tags/pivotal.tag</file>
+                    <outputFile>
+                        ${basedir}/src/main/webapp/WEB-INF/tags/pivotal.tag
+                    </outputFile>
+                    <regex>false</regex>
+                    <token>$VERSION_NUMBER$</token>
+                    <value>${project.versionNumber}</value>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-eclipse-plugin</artifactId>
                 <version>${maven-eclipse-plugin.version}</version>
