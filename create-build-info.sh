@@ -17,8 +17,7 @@ echo "GitOrigin: $gitOrigin"
 echo "BuildUrl: $buildUrl"
 
 # Get Git commit info
-if [ $buildNumber -eq 1 ]
-	then
+if [ $buildNumber -eq 1 ] then
 	echo "Getting commits for $commitHash"
 	git log --pretty=oneline $commitHash > git-commits.log
 else
@@ -36,8 +35,14 @@ else
 	prevHash=$(echo $prevHash | cut -b 1-7)
 	commitHash=$(echo $commitHash | cut -b 1-7)
 
-	echo "Comparing between $prevHash and $commitHash"
-	git log --pretty=oneline "$prevHash"..$commitHash > git-commits.log
+	
+	if [ $prevHash == $commitHash ] then
+		echo "Getting commits for $commitHash"
+		git log --pretty=oneline $commitHash > git-commits.log
+	else
+		echo "Comparing between $prevHash and $commitHash"
+		git log --pretty=oneline "$prevHash".."$commitHash" > git-commits.log
+	fi
 fi
 
 echo "Building commit json"
