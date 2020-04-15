@@ -2,7 +2,7 @@
 # 
 # Only use spaces to indent the .yml configuration.
 # -------
-image: maven:3.6.1
+image: maven:3.6.1 
 
 pipelines:
   branches:
