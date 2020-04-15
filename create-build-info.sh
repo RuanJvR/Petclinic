@@ -20,7 +20,7 @@ echo "BuildUrl: $buildUrl"
 if [ $buildNumber -eq 1 ] 
 	then
 	echo "Getting commits for $commitHash"
-	git log --pretty=oneline $commitHash > git-commits.log
+	git log --pretty=oneline $commitHash -1 > git-commits.log
 else
 	previousbuildNumber=$(expr $buildNumber - 1)
 	baseURL="https://api.bitbucket.org/2.0/repositories/$workspace/$repository/pipelines"
@@ -39,8 +39,8 @@ else
 	
 	if [ $prevHash == $commitHash ] 
 		then
-		echo "Getting commits for $commitHash"
-		git log --pretty=oneline $commitHash > git-commits.log
+		echo "Getting commits for $commitHash as prevHash is the same"
+		git log --pretty=oneline $commitHash -1 > git-commits.log
 	else
 		echo "Comparing between $prevHash and $commitHash"
 		git log --pretty=oneline "$prevHash".."$commitHash" > git-commits.log
