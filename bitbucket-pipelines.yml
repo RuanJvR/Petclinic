@@ -8,7 +8,7 @@ pipelines:
   branches:
     master:
       - step:
-          name: Generate Package Version
+          name: Generate Package Version 
           script:
             - export GENERATED_VERSION=$MAJOR_VERSION.$MINOR_VERSION."$(date +%y%m%d)"."$(date +%H%M)"
             - printenv | grep GENERATED_VERSION > environment.txt
