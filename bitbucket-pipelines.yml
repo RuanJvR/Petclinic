@@ -6,7 +6,7 @@ image: maven:3.6.1
 
 pipelines:
   branches:
-    master:
+    master: 
       - step:
           name: Generate Package Version
           script:
