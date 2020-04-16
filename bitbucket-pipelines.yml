@@ -53,7 +53,7 @@ pipelines:
             - while IFS='' read -r line || [[ -n "$line" ]]; do export $line; done < environment.txt
             - apk update && apk upgrade && apk add --no-cache git curl jq
             - /bin/sh create-build-info.sh $BITBUCKET_REPO_OWNER $BITBUCKET_REPO_SLUG $BITBUCKET_BUILD_NUMBER $BITBUCKET_COMMIT $BITBUCKET_BRANCH $BITBUCKET_GIT_HTTP_ORIGIN
-            - octo build-information --package-id "petclinic.web" --package-id "petclinic.mysql.flyway" --version "$GENERATED_VERSION" --file "octopus.buildinfo" --server "$OCTOPUS_SERVER" --space "$OCTOPUS_SPACE" --apiKey "$OCTOPUS_API_KEY"
+            - octo build-information --package-id "petclinic.web" --version "$GENERATED_VERSION" --file "octopus.buildinfo" --server "$OCTOPUS_SERVER" --space "$OCTOPUS_SPACE" --apiKey "$OCTOPUS_API_KEY"
           artifacts:
             - octopus.buildinfo
       - step:
