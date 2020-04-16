@@ -32,13 +32,13 @@ pipelines:
             - pipe: octopusdeploy/pack:0.6.1
               variables:
                 ID: 'petclinic.mysql.flyway'
-                FORMAT: 'Nupkg'
+                FORMAT: 'Zip'
                 VERSION: $GENERATED_VERSION
                 SOURCE_PATH: 'flyway'
                 OUTPUT_PATH: './flyway'
                 DEBUG: 'false'
           artifacts:
-            - "flyway/*.nupkg"
+            - "flyway/*.zip"
       - step:
           name: Push packages to Octopus
           image: octopusdeploy/octo:7.3.2
