@@ -46,6 +46,23 @@ pipelines:
           artifacts:
             - "flyway/*.zip"
       - step:
+          name: octo pack mysql-roundhouse
+          clone:
+            enabled: true
+          script:
+            - while IFS='' read -r line || [[ -n "$line" ]]; do export $line; done < environment.txt
+            - pipe: octopusdeploy/octopus-cli-run:0.12.0
+              variables:
+                CLI_COMMAND: 'pack'
+                ID: 'petclinic.mysql.roundhouse'
+                FORMAT: 'Zip'
+                VERSION: ${GENERATED_VERSION}
+                SOURCE_PATH: 'roundhouse'
+                OUTPUT_PATH: './roundhouse'
+                DEBUG: 'false'
+          artifacts:
+            - "roundhouse/*.zip"
+      - step:
           name: octo push
           script:
             - while IFS='' read -r line || [[ -n "$line" ]]; do export $line; done < environment.txt
@@ -55,7 +72,7 @@ pipelines:
                 OCTOPUS_SERVER: $OCTOPUS_SERVER
                 OCTOPUS_APIKEY: $OCTOPUS_API_KEY
                 OCTOPUS_SPACE: $OCTOPUS_SPACE
-                PACKAGES: [ "./flyway/petclinic.mysql.flyway.$GENERATED_VERSION.zip", "target/petclinic.web.$GENERATED_VERSION.war" ]
+                PACKAGES: [ "./flyway/petclinic.mysql.flyway.$GENERATED_VERSION.zip", "target/petclinic.web.$GENERATED_VERSION.war", "./roundhouse/petclinic.mysql.roundhouse.$GENERATED_VERSION.zip" ]
                 DEBUG: 'false'
       - step:
           name: octo build-information
