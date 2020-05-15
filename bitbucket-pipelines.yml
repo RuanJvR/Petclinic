@@ -70,7 +70,7 @@ pipelines:
                 OCTOPUS_APIKEY: $OCTOPUS_API_KEY
                 OCTOPUS_SPACE: $OCTOPUS_SPACE
                 VERSION: $GENERATED_VERSION
-                PACKAGE_IDS: ['petclinic.web','petclinic.mysql.flyway']
+                PACKAGE_IDS: ['petclinic.web']
                 MULTIPLE_COMMITS: 'true'
                 DEBUG: 'false'
           artifacts:
