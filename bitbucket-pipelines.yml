@@ -5,7 +5,7 @@
 image: maven:3.6.1 
 
 clone:
-  enabled: false
+  enabled: false 
 pipelines:
   branches: 
     master: 
