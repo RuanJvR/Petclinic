@@ -76,6 +76,20 @@ pipelines:
           artifacts:
             - octopus.buildinfo
       - step:
+          name: octo run-runbook
+          script:
+            - pipe: octopusdeploy/octopus-cli-run:0.15.0
+              variables:
+                CLI_COMMAND: 'run-runbook'
+                OCTOPUS_SERVER: $OCTOPUS_SERVER
+                OCTOPUS_APIKEY: $OCTOPUS_API_KEY
+                OCTOPUS_SPACE: $OCTOPUS_SPACE
+                PROJECT: $OCTOPUS_PROJECT
+                RUNBOOK: 'Check Database exists'
+                ENVIRONMENTS: ['Development']
+                PROGRESS: 'true'
+                DEBUG: 'false'      
+      - step:
           name: octo create-release
           script:
             - pipe: octopusdeploy/octopus-cli-run:0.15.0
