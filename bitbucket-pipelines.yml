@@ -89,7 +89,7 @@ pipelines:
       - step:
           name: octo run-runbook
           script:
-            - pipe: octopusdeploy/octopus-cli-run:0.16.0
+            - pipe: octopusdeploy/octopus-cli-run:0.15.0
               variables:
                 CLI_COMMAND: 'run-runbook'
                 OCTOPUS_SERVER: $OCTOPUS_SERVER
