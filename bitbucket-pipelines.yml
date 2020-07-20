@@ -72,7 +72,7 @@ pipelines:
                 VERSION: $GENERATED_VERSION
                 PACKAGE_IDS: ['petclinic.web']
                 MULTIPLE_COMMITS: 'true'
-                DEBUG: 'true'
+                DEBUG: 'false'
           artifacts:
             - octopus.buildinfo   
       - step:
