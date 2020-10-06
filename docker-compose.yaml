@@ -1,0 +1,42 @@
+version: '3'
+services:
+    mysql:
+        container_name: mysql
+        image: mysql
+        ports:
+            - 3306:3306
+        environment: 
+            MYSQL_ROOT_PASSWORD: "Greatballs0ffire!"
+            MYSQL_DATABASE: "petclinic"
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            timeout: 20s
+            retries: 10
+    petclinic:
+        container_name: petclinic_web
+        build:
+            dockerfile: dockerfile
+            context: .
+            args: 
+                - VERSIONNUMBER=1.0.0.3
+                - SERVERNAME=mysql
+                - DATABASENAME=petclinic
+                - USERNAME=root
+                - USERPASSWORD=Greatballs0ffire!
+        depends_on: 
+            mysql:
+                condition: service_healthy
+        ports: 
+            - 8080:8080
+        environment:
+            URL: "jdbc:mysql://mysql:3306/petclinic?useUnicode=true"
+            USERNAME: "root"
+    flyway:
+        container_name: flyway
+        image: flyway/flyway
+        command: -url=jdbc:mysql://mysql:3306/petclinic?useUnicode=true -user=root -password="Greatballs0ffire!" migrate
+        volumes: 
+            - ./flyway/sql:/flyway/sql
+        depends_on: 
+            mysql:
+                condition: service_healthy
