@@ -49,6 +49,5 @@ RUN apk add --update zip
 COPY petclinic.sh ./
 
 # Run tomcat
-#CMD ["catalina.sh","run"]
 CMD ["bash", "petclinic.sh"]
 
