@@ -33,10 +33,10 @@ services:
             USERNAME: "root"
     flyway:
         container_name: flyway
-        image: flyway/flyway
+        build:
+            context: ./flyway
+            dockerfile: dockerfile
         command: -url=jdbc:mysql://mysql:3306/petclinic?useUnicode=true -user=root -password="Greatballs0ffire!" migrate
-        volumes: 
-            - ./flyway/sql:/flyway/sql
         depends_on: 
             mysql:
                 condition: service_healthy
