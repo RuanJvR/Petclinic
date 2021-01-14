@@ -3,3 +3,5 @@ FROM flyway/flyway
 
 # Copy script files to container
 COPY /sql ./sql/
+
+RUN ls ./sql/
