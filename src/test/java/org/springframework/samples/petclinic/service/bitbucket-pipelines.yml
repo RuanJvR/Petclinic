@@ -1,0 +1,59 @@
+# BitBucket Pipeline file for RandomQuotes-JS
+# 
+# Only use spaces to indent the .yml configuration.
+# -------
+image: maven:3.6.1 
+
+pipelines:
+  branches: 
+    postgres: 
+      - step:
+          name: Generate Package Version
+          script:
+            - export GENERATED_VERSION=$MAJOR_VERSION.$MINOR_VERSION."$(date +%y%m%d)"."$(date +%H%M)"
+            - printenv | grep GENERATED_VERSION > environment.txt
+          artifacts:
+          - environment.txt
+      - step:
+          name: Build PetClinic
+          caches:
+            - maven
+          script:
+            - while IFS='' read -r line || [[ -n "$line" ]]; do export $line; done < environment.txt
+            # -B batch mode makes Maven less verbose
+            - mvn -B verify -DskipTests -Dproject.versionNumber=$GENERATED_VERSION -DdatabaseUserName=$DatabaseUserName -DdatabaseUserPassword=$DatabaseUserPassword -DdatabaseServerName=$DatabaseServerName -DdatabaseName=$DatabaseName 
+          artifacts:
+          - environment.txt
+          - "target/*.war"
+      - step:
+          name: Pack Postgres Flyway for Octopus
+          script:
+            - while IFS='' read -r line || [[ -n "$line" ]]; do export $line; done < environment.txt
+            - pipe: octopusdeploy/pack:0.6.1
+              variables:
+                ID: 'petclinic.postgres.flyway'
+                FORMAT: 'Zip'
+                VERSION: $GENERATED_VERSION
+                SOURCE_PATH: 'flyway'
+                OUTPUT_PATH: './flyway'
+                DEBUG: 'false'
+          artifacts:
+            - "flyway/*.zip"
+      - step:
+          name: Push packages to Octopus
+          image: octopusdeploy/octo:7.3.2
+          script:
+            - while IFS='' read -r line || [[ -n "$line" ]]; do export $line; done < environment.txt
+            - octo push --package "./flyway/petclinic.mysql.flyway.$GENERATED_VERSION.zip" --server "$OCTOPUS_SERVER" --space "$OCTOPUS_SPACE" --apiKey "$OCTOPUS_API_KEY"
+            - octo push --package "target/petclinic.web.$GENERATED_VERSION.war" --server "$OCTOPUS_SERVER" --space "$OCTOPUS_SPACE" --apiKey "$OCTOPUS_API_KEY"
+      - step:
+          name: Create release in Octopus
+          image: octopusdeploy/octo:7.3.2
+          script:
+            - octo create-release --project "$OCTOPUS_PROJECT" --server "$OCTOPUS_SERVER" --space "$OCTOPUS_SPACE" --apiKey "$OCTOPUS_API_KEY"
+      - step:
+          name: Deploy to Development
+          image: octopusdeploy/octo:7.3.2
+          script:
+            - octo deploy-release --project "$OCTOPUS_PROJECT" --deployTo "Development" --version "latest" --server "$OCTOPUS_SERVER" --space "$OCTOPUS_SPACE" --apiKey "$OCTOPUS_API_KEY"
+        

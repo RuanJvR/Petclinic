@@ -40,5 +40,6 @@ if [ ! -z "$URL" ]  || [ ! -z "$USERNAME" ] || [ ! -z "$USERPASSWORD" ]; then
     cd /usr/local/tomcat
     rm -rf /tmp/ROOT
 fi
+
 # Start Tomcat
 catalina.sh run
