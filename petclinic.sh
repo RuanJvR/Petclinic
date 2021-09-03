@@ -28,7 +28,7 @@ if [ ! -z "$URL" ]  || [ ! -z "$USERNAME" ] || [ ! -z "$USERPASSWORD" ]; then
     fi
 
     # Remove existing .war
-    sudo rm /usr/local/tomcat/webapps/ROOT.war
+    rm /usr/local/tomcat/webapps/ROOT.war
 
     # Zip new .war
     echo "Repacking .war"
