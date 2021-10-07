@@ -39,7 +39,7 @@ pipelines:
                 CLI_COMMAND: 'pack'
                 ID: 'petclinic.mysql.flyway'
                 FORMAT: 'Zip'
-                VERSION: $GENERATED_VERSION
+                VERSION: ${GENERATED_VERSION}
                 SOURCE_PATH: 'flyway'
                 OUTPUT_PATH: './flyway'
                 DEBUG: 'false'
